@@ -1,0 +1,146 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700;900&display=swap");
+
+@mixin flexCenter($display, $justify, $align, $direction) {
+    display: $display;
+    justify-content: $justify;
+    align-items: $align;
+    flex-direction: $direction;
+}
+
+@mixin widthHeight($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+$bgColor: #384464;
+$crossColor: #e25041;
+$circleColor: #1abc9c;
+$textColor: #fff;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "montserrat", san-serif;
+}
+
+body {
+    @include flexCenter(flex, center, center, column);
+    background-color: $bgColor;
+    min-height: 100vh;
+}
+
+.title,
+.display {
+    padding: 0.5em 0;
+    margin-bottom: 0.5em;
+    color: $textColor;
+    letter-spacing: 1px;
+}
+
+.crossDisplay {
+    color: $crossColor;
+    font-weight: 700;
+}
+.circleDisplay {
+    color: $circleColor;
+    font-weight: 700;
+}
+
+.container {
+    @include widthHeight(100vw, 400px);
+    max-width: 400px;
+    margin-top: 5em;
+    background-color: $textColor;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 5px;
+
+    .box {
+        @include flexCenter(flex, center, center, row);
+        @include widthHeight(100%, 100%);
+        background-color: $bgColor;
+        position: relative;
+        cursor: pointer;
+
+        &.cross,
+        &.circle {
+            cursor: not-allowed;
+        }
+    }
+
+    .cross::before,
+    .cross::after,
+    &.cross .box:not(.cross):not(.circle):hover::before,
+    &.cross .box:not(.cross):not(.circle):hover::after {
+        content: "";
+        position: absolute;
+        background-color: $crossColor;
+        @include widthHeight(100px, 30px);
+    }
+
+    .cross::before,
+    &.cross .box:not(.cross):not(.circle):hover::before {
+        transform: rotateZ(45deg);
+    }
+
+    .cross::after,
+    &.cross .box:not(.cross):not(.circle):hover::after {
+        transform: rotateZ(-45deg);
+    }
+
+    &.cross .box:not(.cross):not(.circle):hover::before,
+    &.cross .box:not(.cross):not(.circle):hover::after {
+        background-color: rgba($crossColor, 15%);
+    }
+
+    .circle::before,
+    .circle::after,
+    &.circle .box:not(.cross):not(.circle):hover::before,
+    &.circle .box:not(.cross):not(.circle):hover::after {
+        content: "";
+        position: absolute;
+        background-color: $circleColor;
+        @include widthHeight(100px, 100px);
+        border-radius: 50%;
+    }
+
+    .circle::after,
+    &.circle .box:not(.cross):not(.circle):hover::after {
+        @include widthHeight(50px, 50px);
+        background-color: $bgColor;
+    }
+
+    &.circle .box:not(.cross):not(.circle):hover::before {
+        background-color: rgba($circleColor, 15%);
+    }
+}
+
+.result {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    @include flexCenter(none, center, center, column);
+    background-color: rgba(#000, 90%);
+    color: $textColor;
+
+    .btn-restart {
+        margin-top: 5em;
+        padding: 1em 2em;
+        border: none;
+        border-radius: 5px;
+        color: $textColor;
+        background-color: $bgColor;
+        cursor: pointer;
+
+        &:hover {
+            background-color: darken($bgColor, 10%);
+        }
+    }
+}
+
+.show {
+    display: flex;
+}
